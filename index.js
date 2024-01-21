@@ -26,15 +26,23 @@ const client = new MongoClient(uri, {
   }
 });
 
+
 async function run() {
     try {
     const ToDoCollection = client.db('TaskManager').collection('ToDo');
+
     app.get('/todo' ,async(req, res) => {
         console.log(req.headers);
         const result = await ToDoCollection.find().toArray();
         res.send(result);
       });
 
+      app.post('/todo', async(req, res) => {
+        const news = req.body
+        const result = await ToDoCollection.insertOne(news)
+        res.send(result)
+      })
+  
 
     // Connect the client to the server	(optional starting in v4.7)
     // await client.connect();
